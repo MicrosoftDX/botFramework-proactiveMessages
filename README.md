@@ -6,6 +6,8 @@ A common ask from developers using Microsoft Bot Framework is how to proactively
 
 A few things have to be considered: First, do we know that user? We need to have the user ID before we do that, which means that the user must have had a message sent to the bot. Second, is the user currently having a conversation with the bot? If so, this notification will come as an interruption, therefore we need to think how we want this interruption to work, if we stop the current conversation and then come back to it, etc.
 
+All samples below include a custom web api controller that also triggers the same proactive messages in order to demonstrate that any code, even if outside the actual dialogs can do the same.
+
 ## examples
 
 <b>simpleSendMessage</b>: This is the simplest form of having the bot initiating the message ot the user. Basically the message is sent as an "ad hoc", which means it won't change the context of the current conversation and that conversation will keep flowing as usual. So if the bot is asking: 
