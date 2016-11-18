@@ -42,6 +42,7 @@ namespace simpleSendMessage
             //We create a timer to simulate some background process or trigger
             t = new Timer(new TimerCallback(timerEvent));
             t.Change(5000, Timeout.Infinite);
+
             var url = HttpContext.Current.Request.Url;
             //We now tell the user that we will talk to them in a few seconds
             await context.PostAsync("Hello! In a few seconds I'll send you a message proactively to demonstrate how bots can initiate messages. You can also make me send a message by accessing: " +
