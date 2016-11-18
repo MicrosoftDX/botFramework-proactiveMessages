@@ -13,8 +13,12 @@ namespace startNewDialogWithPrompt
 {
     public class ConversationStarter
     {
+        //Note: Of course you don't want this here. Eventually you will need to save this in some table
+        //Having this here as static variable means we can only remember one user :)
+        public static string resumptionCookie;
+
         //This will interrupt the conversation and send the user to SurveyDialog, then wait until that's done 
-        public static async Task Resume(string resumptionCookie)
+        public static async Task Resume()
         {
             var message = ResumptionCookie.GZipDeserialize(resumptionCookie).GetMessage();
             var client = new ConnectorClient(new Uri(message.ServiceUrl));

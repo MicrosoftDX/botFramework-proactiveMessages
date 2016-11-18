@@ -23,7 +23,6 @@ namespace startNewDialog
         [NonSerialized]
         Timer t;
         
-        string resumptionCookie;
         public async Task StartAsync(IDialogContext context)
         {
             context.Wait(this.MessageReceivedAsync);
@@ -31,22 +30,23 @@ namespace startNewDialog
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var message = await result;
-            resumptionCookie = new ResumptionCookie(message).GZipSerialize();
+            ConversationStarter.resumptionCookie = new ResumptionCookie(message).GZipSerialize();
 
             //We will start a timer to fake a background service that will trigger the proactive message
 
             t = new Timer(new TimerCallback(timerEvent));
             t.Change(5000, Timeout.Infinite);
 
-            //We echo the message regardless
-            await context.PostAsync("Hey there, I'm going to interrupt our conversation and start a survey in a few seconds");
+            var url = HttpContext.Current.Request.Url;
+            await context.PostAsync("Hey there, I'm going to interrupt our conversation and start a survey in a few seconds. You can also make me send a message by accessing: " +
+                    url.Scheme + "://" + url.Host + ":" + url.Port + "/api/CustomWebApi"); 
             context.Wait(MessageReceivedAsync);
         }
         public void timerEvent(object target)
         {
             
             t.Dispose();
-            ConversationStarter.Resume(resumptionCookie); //We don't need to wait for this, just want to start the interruption here
+            ConversationStarter.Resume(); //We don't need to wait for this, just want to start the interruption here
         }
 
 

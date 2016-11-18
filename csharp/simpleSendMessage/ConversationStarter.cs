@@ -13,8 +13,16 @@ namespace simpleSendMessage
 {
     public class ConversationStarter
     {
+        //Note: Of course you don't want these here. Eventually you will need to save these in some table
+        //Having them here as static variables means we can only remember one user :)
+        public static string fromId;
+        public static string fromName;
+        public static string toId;
+        public static string toName;
+        public static string serviceUrl;
+
         //This will send an adhoc message to the user
-        public static async Task Resume(string fromId, string fromName,string toId, string toName, string serviceUrl)
+        public static async Task Resume()
         {
             var userAccount = new ChannelAccount(toId,toName);
             var botAccount = new ChannelAccount(fromId, fromName);

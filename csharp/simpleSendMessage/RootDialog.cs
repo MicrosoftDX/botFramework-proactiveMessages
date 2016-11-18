@@ -21,12 +21,7 @@ namespace simpleSendMessage
         [NonSerialized]
         Timer t;
        
-        string fromId;
-        string fromName;
-
-        string toId;
-        string toName;
-        string serviceUrl;
+      
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -38,25 +33,26 @@ namespace simpleSendMessage
             var message = await result;
 
             //We need to keep this data so we know who to send the message to. Assume this would be stored somewhere, e.g. an Azure Table
-            this.toId = message.From.Id;
-            this.toName = message.From.Name;
-            this.fromId = message.Recipient.Id;
-            this.fromName = message.Recipient.Name;
-            this.serviceUrl = message.ServiceUrl;
+            ConversationStarter.toId = message.From.Id;
+            ConversationStarter.toName = message.From.Name;
+            ConversationStarter.fromId = message.Recipient.Id;
+            ConversationStarter.fromName = message.Recipient.Name;
+            ConversationStarter.serviceUrl = message.ServiceUrl;
 
             //We create a timer to simulate some background process or trigger
             t = new Timer(new TimerCallback(timerEvent));
             t.Change(5000, Timeout.Infinite);
-
+            var url = HttpContext.Current.Request.Url;
             //We now tell the user that we will talk to them in a few seconds
-            await context.PostAsync("Hello! In a few seconds I'll send you a message proactively to demonstrate how bots can initiate messages");
+            await context.PostAsync("Hello! In a few seconds I'll send you a message proactively to demonstrate how bots can initiate messages. You can also make me send a message by accessing: " +
+                    url.Scheme + "://" + url.Host + ":" + url.Port + "/api/CustomWebApi");
             context.Wait(MessageReceivedAsync);
         }
         public void timerEvent(object target)
         {
             
             t.Dispose();
-            ConversationStarter.Resume(this.fromId,this.fromName,this.toId,this.toName,this.serviceUrl); //We don't need to wait for this, just want to start the interruption here
+            ConversationStarter.Resume(); //We don't need to wait for this, just want to start the interruption here
         }
 
 

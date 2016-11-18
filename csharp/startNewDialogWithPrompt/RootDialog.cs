@@ -21,7 +21,7 @@ namespace startNewDialogWithPrompt
         [NonSerialized]
         Timer t;
 
-        string resumptionCookie;
+       
         public async Task StartAsync(IDialogContext context)
         {
             context.Wait(this.MessageReceivedAsync);
@@ -30,21 +30,23 @@ namespace startNewDialogWithPrompt
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var message = await result;
-            resumptionCookie = new ResumptionCookie(message).GZipSerialize();
+            ConversationStarter.resumptionCookie = new ResumptionCookie(message).GZipSerialize();
 
             //Prepare the timer to simulate a background/asynchonous process
             t = new Timer(new TimerCallback(timerEvent));
             t.Change(5000, Timeout.Infinite);
 
+            var url = HttpContext.Current.Request.Url;
             //We echo the message regardless
-            await context.PostAsync("Hello. In a few seconds I'll interrupt this dialog and bring another one with a prompt");
+            await context.PostAsync("Hello. In a few seconds I'll interrupt this dialog and bring another one with a prompt. You can also make me send a message by accessing: " +
+                    url.Scheme + "://" + url.Host + ":" + url.Port + "/api/CustomWebApi"); 
             context.Wait(MessageReceivedAsync);
         }
 
         public void timerEvent(object target)
         {
             t.Dispose();
-            ConversationStarter.Resume(resumptionCookie); //We don't need to wait for this, just want to start the interruption here
+            ConversationStarter.Resume(); //We don't need to wait for this, just want to start the interruption here
         }
 
 
