@@ -25,8 +25,10 @@ function sendProactiveMessage(addr) {
 
 var savedAddress;
 server.post('/api/messages', connector.listen());
-server.get('/api/CustomWebApi', () => {
+server.get('/api/CustomWebApi', (req, res, next) => {
     sendProactiveMessage(savedAddress);
+    res.send('triggered');
+    next();
   }
 );
 

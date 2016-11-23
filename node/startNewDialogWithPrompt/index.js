@@ -23,17 +23,22 @@ bot.dialog('/survey', [
   },
   function (session, results) {
     session.send("Great, back to the original conversation");
+    session.endDialog();
   }
 ]);
 
 function startProactiveDialog(addr) {
+  // set resume:false to resume at the root dialog
+  // else true to resume the previous dialog
   bot.beginDialog(savedAddress, "*:/survey", {}, { resume: true });  
 }
 
 var savedAddress;
 server.post('/api/messages', connector.listen());
-server.get('/api/CustomWebApi', () => {
+server.get('/api/CustomWebApi', (req, res, next) => {
     startProactiveDialog(savedAddress);
+    res.send('triggered');
+    next();
   }
 );
 
