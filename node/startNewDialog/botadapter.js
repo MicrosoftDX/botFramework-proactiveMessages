@@ -85,16 +85,17 @@ function loadSession(address, opts, cb) {
   }, (err) => { _this.errorLogger(err); cb(err); })
 }
 
-function beginDialog = function(address, dialogId, dialogArgs, opts, done) {
-  if (typeof opts === function) {
+function beginDialog(address, dialogId, dialogArgs, opts, done) {
+  if (typeof opts === 'function') {
     done = opts;
     opts = {};
   }
 
   if (opts.resume) {
-    this.loadSession(addr, { dialogId:id, dialogArgs:args }, (err, session) => {
+    this.loadSession(address, { dialogId:dialogId, dialogArgs:dialogArgs }, 
+    (err, session) => {
       if (!err) {
-        session.beginDialog(id, args);
+        session.beginDialog(dialogId, dialogArgs);
         if (done) {
           done(null);
         }
@@ -117,5 +118,5 @@ function patch(bot) {
   return bot;
 }
 
-module.exports = patch;
+exports.patch = patch;
 

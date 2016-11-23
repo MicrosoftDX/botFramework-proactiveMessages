@@ -14,8 +14,7 @@ var connector = new builder.ChatConnector({
 });
 
 var bot = new builder.UniversalBot(connector);
-bot = require("botadapter").patch(bot);
-
+bot = require("./botadapter").patch(bot);
 
 bot.dialog('/survey', [
   function (session, args, next) {
@@ -28,7 +27,7 @@ bot.dialog('/survey', [
 ]);
 
 function startProactiveDialog(addr) {
-  
+  bot.beginDialog(savedAddress, "*:/survey", {}, { resume: true });  
 }
 
 var savedAddress;
@@ -51,6 +50,6 @@ bot.dialog('/', function(session, args) {
   session.send(message);
 
   setTimeout(() => {
-    sendProactiveMessage(savedAddress);
+    startProactiveDialog(savedAddress);
   }, 5000)
 });
