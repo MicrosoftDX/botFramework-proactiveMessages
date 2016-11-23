@@ -1,7 +1,7 @@
 {
   "name": "simple-send-message",
   "version": "1.0.0",
-  "description": "demonstrate proactive sending of a simple message",
+  "description": "demonstrate proactive starting of a new dialog",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
