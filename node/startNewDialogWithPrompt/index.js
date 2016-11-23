@@ -41,7 +41,7 @@ bot.dialog('/', function(session, args) {
 
   savedAddress = session.message.address;
 
-  var message = 'Hello! In a few seconds I\'ll send you a message proactively to demonstrate how bots can initiate messages.';
+  var message = 'Hey there, I\'m going to interrupt our conversation and start a survey in a few seconds.';
   session.send(message);
   
   connector.url
