@@ -22,7 +22,7 @@ namespace simpleSendMessage.Controllers
             {
                 if (!string.IsNullOrEmpty(ConversationStarter.fromId))
                 {
-                    await ConversationStarter.Resume(); //We don't need to wait for this, just want to start the interruption here
+                    await ConversationStarter.Resume(ConversationStarter.conversationId, ConversationStarter.channelId); //We don't need to wait for this, just want to start the interruption here
 
                     var resp = new HttpResponseMessage(HttpStatusCode.OK);
                     resp.Content = new StringContent($"<html><body>Message sent, thanks.</body></html>", System.Text.Encoding.UTF8, @"text/html");

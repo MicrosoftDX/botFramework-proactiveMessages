@@ -20,8 +20,8 @@ namespace simpleSendMessage
     {
         [NonSerialized]
         Timer t;
-       
-      
+
+        
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -38,6 +38,8 @@ namespace simpleSendMessage
             ConversationStarter.fromId = message.Recipient.Id;
             ConversationStarter.fromName = message.Recipient.Name;
             ConversationStarter.serviceUrl = message.ServiceUrl;
+            ConversationStarter.channelId = message.ChannelId;
+            ConversationStarter.conversationId = message.Conversation.Id;
 
             //We create a timer to simulate some background process or trigger
             t = new Timer(new TimerCallback(timerEvent));
@@ -53,7 +55,7 @@ namespace simpleSendMessage
         {
             
             t.Dispose();
-            ConversationStarter.Resume(); //We don't need to wait for this, just want to start the interruption here
+            ConversationStarter.Resume(ConversationStarter.conversationId,ConversationStarter.channelId); //We don't need to wait for this, just want to start the interruption here
         }
 
 
