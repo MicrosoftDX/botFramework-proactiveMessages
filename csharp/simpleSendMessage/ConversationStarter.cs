@@ -30,12 +30,9 @@ namespace simpleSendMessage
             var botAccount = new ChannelAccount(fromId, fromName);
             var connector = new ConnectorClient(new Uri(serviceUrl));
            
-
-
             IMessageActivity message = Activity.CreateMessageActivity();
             if (!string.IsNullOrEmpty(conversationId) && !string.IsNullOrEmpty(channelId))
             {
-                message.Conversation = new ConversationAccount(id: conversationId);
                 message.ChannelId = channelId;
             }
             else
