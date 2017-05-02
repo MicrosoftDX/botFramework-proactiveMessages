@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace simpleSendMessage.Controllers
 {
-    //This controller exists just to prove that we can trigger that proactive conversation even from compeltely outside the bot's code
+    //This controller exists just to prove that we can trigger that proactive conversation even from completely outside the bot's code
     //Let's say you have a web service or some backend system that needs to trigger it, this is how you would do that
     public class CustomWebAPIController : ApiController
     {
