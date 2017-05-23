@@ -33,7 +33,7 @@ bot.dialog('/survey', [
 function startProactiveDialog(addr) {
   // set resume:false to resume at the root dialog
   // else true to resume the previous dialog
-  bot.beginDialog(savedAddress, "*:/survey", {}, { resume: true });  
+  bot.beginDialog(addr, "*:/survey", {}, { resume: true });  
 }
 
 var savedAddress;
