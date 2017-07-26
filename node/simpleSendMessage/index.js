@@ -16,9 +16,9 @@ var connector = new builder.ChatConnector({
 var bot = new builder.UniversalBot(connector);
 
 
-function sendProactiveMessage(addr) {
+function sendProactiveMessage(addr, customMessage) {
   var msg = new builder.Message().address(addr);
-  msg.text('Hello, this is a notification');
+  msg.text(customMessage || 'Hello, this is a notification');
   msg.textLocale('en-US');
   bot.send(msg);
 }
@@ -27,6 +27,15 @@ var savedAddress;
 server.post('/api/messages', connector.listen());
 server.get('/api/CustomWebApi', (req, res, next) => {
     sendProactiveMessage(savedAddress);
+    res.send('triggered');
+    next();
+  }
+);
+// Receive a custom message via POST body.
+// For example, call this api with following JSON: {"message":"Hello World"}
+server.post('/api/CustomWebApi', (req, res, next) => {
+    const message = req.params.message;
+    sendProactiveMessage(savedAddress, message);
     res.send('triggered');
     next();
   }
