@@ -12,6 +12,7 @@ using System.Web;
 using System.Xml.Linq;
 using System.Threading;
 using Newtonsoft.Json;
+using Microsoft.Bot.Builder.ConnectorEx;
 
 namespace startNewDialogWithPrompt
 {
@@ -30,7 +31,8 @@ namespace startNewDialogWithPrompt
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var message = await result;
-            ConversationStarter.resumptionCookie = new ResumptionCookie(message).GZipSerialize();
+            var conversationReference = message.ToConversationReference();
+            ConversationStarter.conversationReference = JsonConvert.SerializeObject(conversationReference);
 
             //Prepare the timer to simulate a background/asynchonous process
             t = new Timer(new TimerCallback(timerEvent));
