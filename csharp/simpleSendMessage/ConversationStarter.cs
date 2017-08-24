@@ -20,16 +20,21 @@ namespace simpleSendMessage
         public static string toId;
         public static string toName;
         public static string serviceUrl;
-        public static string channelId;
-        public static string conversationId;
+        public static string appid;
+        public static string password;
 
         //This will send an adhoc message to the user
         public static async Task Resume(string conversationId,string channelId)
         {
+            //Note: conversationId can be null, in this case a new one is created in the code.
+            
             var userAccount = new ChannelAccount(toId,toName);
             var botAccount = new ChannelAccount(fromId, fromName);
-            var connector = new ConnectorClient(new Uri(serviceUrl));
-           
+            
+            MicrosoftAppCredentials.TrustServiceUrl(serviceUrl);
+            MicrosoftAppCredentials creds = new MicrosoftAppCredentials(appid, password);
+            var connector = new ConnectorClient(new Uri(serviceUrl), creds);
+            
             IMessageActivity message = Activity.CreateMessageActivity();
             if (!string.IsNullOrEmpty(conversationId) && !string.IsNullOrEmpty(channelId))
             {
